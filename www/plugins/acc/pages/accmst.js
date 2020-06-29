@@ -107,9 +107,8 @@ define(function() {
                     form: [{
                             type: "group",
                             items: [{
-                                    title: "分類代號",
+                                    title: "科目代號",
                                     key: 'cd_type',
-                                    required: true,
                                     editstatus: {
                                         relation: "and",
                                         filedlist: [
@@ -120,9 +119,8 @@ define(function() {
                                     lovtype: ''
                                 },
                                 {
-                                    title: "分類名稱",
-                                    key: 'cd_desc',
-                                    required: true,
+                                    title: "科目名稱",
+                                    key: 'acc_name',
                                     editstatus: {
                                         relation: "and",
                                         filedlist: [
@@ -133,9 +131,20 @@ define(function() {
                                     lovtype: ''
                                 },
                                 {
-                                    title: "分類英文名稱",
+                                    title: "譯音碼",
+                                    key: 'big5',
+                                    editstatus: {
+                                        relation: "and",
+                                        filedlist: [
+                                            { field: "formstatus", status: "add,edit" } //表單為新增，修改狀態
+                                        ]
+                                    },
+                                    type: 'basDefault',
+                                    lovtype: ''
+                                },
+                                {
+                                    title: "科目英文名稱",
                                     key: 'eng_desc',
-                                    required: true,
                                     editstatus: {
                                         relation: "and",
                                         filedlist: [
@@ -149,7 +158,6 @@ define(function() {
                                     title: "借貸別",
                                     key: 'c_or_d',
                                     type: 'basRadiosinline',
-                                    required: true,
                                     css: "cell2",
                                     editstatus: {
                                         relation: "and",
@@ -163,11 +171,10 @@ define(function() {
                                     ],
                                 },
                                 {
-                                    title: "分層類別",
+                                    title: "科目別",
                                     key: 'type_class',
                                     type: 'basRadiosinline',
                                     css: "cell2",
-                                    required: true,
                                     editstatus: {
                                         relation: "and",
                                         filedlist: [
@@ -175,15 +182,55 @@ define(function() {
                                         ]
                                     },
                                     titleMap: [
-                                        { value: "1", name: "大分類" },
-                                        { value: "2", name: "中分類" },
-                                        { value: "3", name: "小分類" },
+                                        { value: "1", name: "科目" },
+                                        { value: "2", name: "子目" },
                                     ],
                                 },
                                 {
-                                    title: "上層分類",
-                                    key: 'pid',
-                                    required: true,
+                                    title: "幣別",
+                                    key: 'coin_nbr',
+                                    editstatus: {
+                                        relation: "and",
+                                        filedlist: [
+                                            { field: "formstatus", status: "add,edit" } //表單為新增，修改狀態
+                                        ]
+                                    },
+                                    relationfield: [{
+                                        findfield: "amt",
+                                        tofield: "amt"
+                                    }, ],
+                                    additionalField: {
+                                        key: "amt",
+                                        type: "basString"
+                                    },
+                                    nameField: "amt",
+                                    type: 'basLov',
+                                    lovtype: ''
+                                },
+                                {
+                                    title: "所屬小分類",
+                                    key: 'assy_cd2',
+                                    editstatus: {
+                                        relation: "and",
+                                        filedlist: [
+                                            { field: "formstatus", status: "add,edit" } //表單為新增，修改狀態
+                                        ]
+                                    },
+                                    relationfield: [{
+                                        findfield: "assy_cd2",
+                                        tofield: "assy_cd2"
+                                    }, ],
+                                    additionalField: {
+                                        key: "assy_cd2",
+                                        type: "basString"
+                                    },
+                                    nameField: "assy_cd2",
+                                    type: 'basLov',
+                                    lovtype: ''
+                                },
+                                {
+                                    title: "備註",
+                                    key: 'remark',
                                     editstatus: {
                                         relation: "and",
                                         filedlist: [

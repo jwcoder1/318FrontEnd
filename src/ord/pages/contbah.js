@@ -1,5 +1,5 @@
 define(function () {
-    angular.module('app').controller('ord.contract',
+    angular.module('app').controller('ord.contbah',
         function ($rootScope, $scope, $location, uiGridConstants, utils, path, settings,
             $timeout, dialog, toastr, ngDialog, qwsys, $http) {
             var scope = $scope;
@@ -194,7 +194,7 @@ define(function () {
 
                     scope.promise = utils.ajax({
                         method: 'POST',
-                        url: "ord/contract/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort=" + scope.datapage.sort,
+                        url: "ord/contbah/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort=" + scope.datapage.sort,
                         mockUrl: "plugins/base/data/orderlines.json",
                         data: scope.filter
                     }).then(function (res) {
@@ -225,7 +225,7 @@ define(function () {
                 opendetail: function () {
                     var node = {
                         name: "合約資料維護",
-                        url: 'ord/contract.detail'
+                        url: 'ord/contbah.detail'
                     }
                     $scope.$emit('opencusdetail', node);
                 }

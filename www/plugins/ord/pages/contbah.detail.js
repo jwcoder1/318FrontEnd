@@ -1,5 +1,5 @@
 define(function () {
-    angular.module('app').controller('ord.contract.detail',
+    angular.module('app').controller('ord.contbah.detail',
         function ($rootScope, $scope, $location, utils, path, getSingleView, settings,
             $timeout, dialog, toastr, ngDialog, uiGridConstants, qwsys, sysconstant) {
             var scope = $scope;
@@ -119,6 +119,11 @@ define(function () {
                             "cus_nbr": {
                                 "title": "客戶編號",
                                 "type": "string"
+                            },
+                            "cus_alias":{
+                                "title":"客戶簡稱",
+                                "type": "string"
+
                             },
                             "date": {
                                 "title": "日期",
@@ -274,24 +279,24 @@ define(function () {
                                     type: 'basEsydatetime',
                                     format: "YYYY"
                                 },
-                                {
-                                    title: "年度型合約",
-                                    key: 'year_status',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basCheckboxes',
-                                    css: "cell2",
-                                    titleMap: [{
-                                        value: "1",
-                                        name: "是"
-                                    }, ],
-                                },
+                                // {
+                                //     title: "年度型合約",
+                                //     key: 'year_status',
+                                //     editstatus: {
+                                //         relation: "and",
+                                //         filedlist: [{
+                                //                 field: "formstatus",
+                                //                 status: "add,edit"
+                                //             } //表单为新增，修改状态
+                                //         ]
+                                //     },
+                                //     type: 'basCheckboxes',
+                                //     css: "cell2",
+                                //     titleMap: [{
+                                //         value: "1",
+                                //         name: "是"
+                                //     }, ],
+                                // },
                                 {
                                     title: "公費金額",
                                     key: 'amt',
@@ -344,25 +349,25 @@ define(function () {
                                     type: 'basLov',
                                     lovtype: 'getwork'
                                 },
-                                {
-                                    title: "狀態",
-                                    key: 'status',
-                                    readonly: true,
-                                    titleMap: [{
-                                            value: "10",
-                                            name: "【尚未請款】"
-                                        },
-                                        {
-                                            value: "20",
-                                            name: "【部分請款】"
-                                        },
-                                        {
-                                            value: "30",
-                                            name: "【全部請款】"
-                                        }
-                                    ],
-                                    type: 'basStatus'
-                                }
+                                // {
+                                //     title: "狀態",
+                                //     key: 'status',
+                                //     readonly: true,
+                                //     titleMap: [{
+                                //             value: "10",
+                                //             name: "【尚未請款】"
+                                //         },
+                                //         {
+                                //             value: "20",
+                                //             name: "【部分請款】"
+                                //         },
+                                //         {
+                                //             value: "30",
+                                //             name: "【全部請款】"
+                                //         }
+                                //     ],
+                                //     type: 'basStatus'
+                                // }
                             ]
                         },
                         //下面为行明细
@@ -423,7 +428,7 @@ define(function () {
                                         ]
                                     },
                                     type: 'basEsydatetime',
-                                    format: 'YYYY',
+                                    format: 'YYYYMM',
                                     width: 110
                                 },
                                 "items_desc": {
@@ -490,8 +495,8 @@ define(function () {
                     dialog.confirm('确定删除当前数据?').then(function () {
                         scope.promise = utils.ajax({
                             method: 'DELETE',
-                            url: "ord/contract/" + scope.model.uid,
-                            mockUrl: "plugins/data/contract.detail.json"
+                            url: "ord/contbah/" + scope.model.uid,
+                            mockUrl: "plugins/data/contbah.detail.json"
                         }).then(function (res) {
                             toastr.info("数据删除成功!!!");
                             scope.uid = "";
@@ -514,8 +519,8 @@ define(function () {
                     if (scope.uid) {
                         scope.promise = utils.ajax({
                             method: 'GET',
-                            url: "ord/contract/" + scope.uid,
-                            mockUrl: "plugins/data/contract.detail.json"
+                            url: "ord/contbah/" + scope.uid,
+                            mockUrl: "plugins/data/contbah.detail.json"
                         }).then(function (res) {
                             var data = res.data;
                             scope.model = data.body;
@@ -552,7 +557,7 @@ define(function () {
                     scope.promise = utils.ajax({
                         method: "POST",
                         url: "ord/contbah",
-                        mockUrl: "plugins/data/contract.detail.json",
+                        mockUrl: "plugins/data/contbah.detail.json",
                         data: scope.model
                     }).then(function (res) {
                         console.log("After Save Contract Response !",res);

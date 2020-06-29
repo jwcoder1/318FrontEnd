@@ -194,10 +194,12 @@ define(function () {
 
                     scope.promise = utils.ajax({
                         method: 'POST',
-                        url: "ord/contract/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort=" + scope.datapage.sort,
+                        url: "ord/contbah/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort=" + scope.datapage.sort,
                         mockUrl: "plugins/base/data/orderlines.json",
                         data: scope.filter
                     }).then(function (res) {
+                        console.log("Cont_bah HEADER===",res);
+                        
                         scope.model = res.data.body;
                     });
 
