@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "rootDir": "src",
+        "outDir": "www/plugins/vehicle",
+        "target": "es5",
+        "newLine": "LF",
+        "experimentalDecorators": true,
+        "sourceMap": true
+    },
+    "exclude": [
+        "node_modules",
+        "yes-ui",
+        "typings",
+        "www"
+    ]
+}

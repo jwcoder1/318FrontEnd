@@ -1,0 +1,501 @@
+define(function() {
+    angular.module('app').controller('ord.project.detail',
+        function($rootScope, $scope, $location, utils, path, getSingleView, settings,
+            $timeout, dialog, toastr, ngDialog, uiGridConstants, qwsys,sysconstant) {
+            var scope = $scope;
+            scope.uid = "";
+            if ($rootScope.uid) {
+                scope.uid = $rootScope.uid;
+                $rootScope.uid = "";
+            };
+            scope.model = {
+                formstatus: "add" //edit,view
+            };
+            scope.promise=null;
+            scope.detailUrl = "plugins/bas/templates/detail.html";
+            scope.config = {
+                listoperation: {
+                    add: {
+                        name: "新增",
+                        icon: "fa-plus",
+                        readonlystatus: {
+                            relation: "and",
+                            filedlist: [
+                                { field: "formstatus", status: "add,edit,read" } //表单新增状态
+                            ]
+                        },
+                        action: function(event, form) {
+                            scope.action.add(event);
+                        }
+                    },
+                    save: {
+                        name: "保存",
+                        icon: "fa-save",
+                        editstatus: {
+                            relation: "and",
+                            filedlist: [
+                                { field: "formstatus", status: "add,edit" }, //表单为新增，修改状态
+                            ]
+                        },
+                        action: function(event, form) {
+                            scope.action.save(event, form);
+                        }
+                    },
+                    undo: {
+                        name: "取消",
+                        icon: "fa-undo",
+                        editstatus: {
+                            relation: "and",
+                            filedlist: [
+                                { field: "formstatus", status: "add,edit" }, //表单为新增，修改状态
+                            ]
+                        },
+                        action: function(event, form) {
+                            scope.action.undo(event);
+                        }
+                    },
+                    edit: {
+                        name: "修改",
+                        icon: "fa-edit",
+                        editstatus: {
+                            relation: "and",
+                            filedlist: [
+                                { field: "formstatus", status: "view" } //查询状态                              
+                            ]
+                        },
+                        action: function(event, form) {
+                            scope.action.edit(event);
+                        }
+                    },
+                    del: { //分配状态下还可以删除
+                        name: "删除",
+                        icon: "fa-remove",
+                        htmlClass: "deletestyle",
+                        editstatus: {
+                            relation: "and",
+                            filedlist: [
+                                { field: "formstatus", status: "view" } //表单查询状态                             
+                            ]
+                        },
+                        action: function(event, form) {
+                            scope.action.del(event);
+                        }
+                    },
+                    refresh: {
+                        name: "刷新",
+                        icon: "fa-refresh",
+                        htmlClass: "refresh",
+                        editstatus: {
+                            relation: "and",
+                            filedlist: [
+                                { field: "formstatus", status: "view" }, //表单为新增，修改状态
+                            ]
+                        },
+                        action: function(event, form) {
+                            scope.action.load();
+                        }
+                    }
+                },
+                form: {
+                    schema: {
+                        "type": "object",
+                        "properties": {
+                            "group_nbr": {
+                                "title": "組別",
+                                "type": "string"
+                            }
+                     ,
+                            "inv_date": {
+                                "title": "委任日期",
+                                "type": "string"
+                            }
+                     ,
+                            "con_nbr": {
+                                "title": "案件編號",
+                                "type": "string"
+                            }
+                     ,
+                            "cus_nbr": {
+                                "title": "客戶編號",
+                                "type": "string"
+                            }
+                     ,
+                            "nbr": {
+                                "title": "合約編號",
+                                "type": "string"
+                            }
+                     ,
+                            "inv_user": {
+                                "title": "接案人員",
+                                "type": "string"
+                            }
+                     ,
+                            "edit_user1": {
+                                "title": "處理人員1",
+                                "type": "string"
+                            }
+                     ,
+                            "edit_user2": {
+                                "title": "處理人員2",
+                                "type": "string"
+                            }
+                     ,
+                            "items_desc": {
+                                "title": "合約描述",
+                                "type": "string"
+                            }
+                     ,
+                            "work_desc": {
+                                "title": "工作細項",
+                                "type": "string"
+                            }
+                     ,
+                            "plan_date": {
+                                "title": "預計完成日期",
+                                "type": "string"
+                            }
+                     ,
+                            "appo_letter": {
+                                "title": "委任書上傳",
+                                "type": "string"
+                            }
+                     ,
+                            "proj_status": {
+                                "title": "核准否",
+                                "type": "Boolean"
+                            }
+                     ,
+                            "over_date": {
+                                "title": "完成日期",
+                                "type": "string"
+                            }
+                     ,
+                            "close_date": {
+                                "title": "結案日期",
+                                "type": "string"
+                            }
+                     ,
+                            "close_flag": {
+                                "title": "結案否",
+                                "type": "Boolean"
+                            }
+                        }
+                    },
+                    form: [
+                    {
+                        type: "group",
+                        title: "",
+                        items: [
+                           {
+                                title: "組別",
+                                key: 'group_nbr',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basLov',
+                                lovtype: 'getmtype'
+                            }
+                     ,
+                           {
+                                title: "委任日期",
+                                key: 'inv_date',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basEsydatetime',
+                            }
+                     ,
+                           {
+                                title: "案件編號",
+                                key: 'con_nbr',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basDefault',
+                            }
+                     ,
+                           {
+                                title: "客戶編號",
+                                key: 'cus_nbr',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basLov',
+                                lovtype: 'getmtype'
+                            }
+                     ,
+                           {
+                                title: "合約編號",
+                                key: 'nbr',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basLov',
+                                lovtype: 'getmtype'
+                            }
+                     ,
+                           {
+                                title: "接案人員",
+                                key: 'inv_user',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basLov',
+                                lovtype: 'getmtype'
+                            }
+                     ,
+                           {
+                                title: "處理人員1",
+                                key: 'edit_user1',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basLov',
+                                lovtype: 'getmtype'
+                            }
+                     ,
+                           {
+                                title: "處理人員2",
+                                key: 'edit_user2',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basLov',
+                                lovtype: 'getmtype'
+                            }
+                     ,
+                           {
+                                title: "合約描述",
+                                key: 'items_desc',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basDefault',
+                            }
+                     ,
+                           {
+                                title: "工作細項",
+                                key: 'work_desc',
+                                css: "cell100",
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basTextarea',
+                            }
+                     ,
+                           {
+                                title: "預計完成日期",
+                                key: 'plan_date',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basEsydatetime',
+                            }
+                     ,
+                           {
+                                title: "委任書上傳",
+                                key: 'appo_letter',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basUploader',
+                            }
+                     ,
+                           {
+                                title: "核准否",
+                                key: 'proj_status',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basRadiosinline',
+                                titleMap: [
+                                    { value: "1", name: "未核准" },
+                                    { value: "2", name: "已核准" },
+                                ],
+                            }
+                     ,
+                           {
+                                title: "完成日期",
+                                key: 'over_date',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basEsydatetime',
+                            }
+                     ,
+                           {
+                                title: "結案日期",
+                                key: 'close_date',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basEsydatetime'
+                                
+                            }
+                     ,
+                           {
+                                title: "結案否",
+                                key: 'close_flag',
+                                editstatus: {
+                                    relation: "and",
+                                    filedlist: [
+                                        { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
+                                    ]
+                                },
+                                type: 'basRadiosinline',
+                                titleMap: [
+                                    { value: "1", name: "未核准" },
+                                    { value: "2", name: "已核准" },
+                                ]
+                            }
+                        ]
+                     }
+//下面为分组B
+//下面为分组C
+                   ]
+                }
+            };
+            scope.action = {
+                add: function(event) {
+                    $scope.$broadcast('schemaFormRedraw');
+                    scope.model = {
+                        formstatus: "add" //edit,view
+                    }
+                },
+                edit: function() {
+                    scope.model.formstatus = "edit"
+                    $scope.$broadcast('schemaFormRedraw');
+                },
+                del: function() {
+                    dialog.confirm('确定删除当前数据?').then(function() {
+                        scope.promise=utils.ajax({
+                            method: 'DELETE',
+                            url: "ord/contbah/" + scope.model.uid,
+                            mockUrl: "plugins/data/project.detail.json"
+                        }).then(function(res) {
+                            toastr.info("数据删除成功!!!");
+                            scope.uid = "";
+                            scope.action.add();
+                            scope.refreshtab("refreshcontbah", {});
+
+                        });
+                    });
+                },
+                undo: function() {
+                    if (scope.model.formstatus == "add") {
+                        scope.model = angular.copy(scope.bakmodel);
+                    } else {
+                        scope.model = angular.copy(scope.bakmodel);
+                        scope.$broadcast("GridRedraw");
+                    }
+                    scope.model.formstatus = "view";
+                },
+                load: function() {
+                    if (scope.uid) {
+                        scope.promise=utils.ajax({
+                            method: 'GET',
+                            url: "ord/contbah/" + scope.uid,
+                            mockUrl: "plugins/data/project.detail.json"
+                        }).then(function(res) {
+                            var data = res.data;
+                            scope.model = data.body;
+                            scope.model.formstatus = "view";
+                            for (var p in scope.model) {
+                                if (scope.model[p] === null) {
+                                    delete scope.model[p];
+                                }
+                            }
+                            scope.bakmodel = angular.copy(scope.model);
+                        });
+                    } else {
+                        scope.action.add();
+                    }
+
+                },
+                save: function(event, form) {
+                    for (var p in scope.model) {
+                        if (scope.model[p] === null) {
+                            delete scope.model[p];
+                        }
+                    }
+                    scope.$broadcast("schemaFormValidate");
+                    if (!form.base_form.$valid) {
+                        toastr.warning("请输入必填项！");
+                        return
+                    }
+                    var type = scope.model.uid ? "edit" : "add";
+                    var bakstatus = scope.model.formstatus
+                    scope.model.formstatus = "read";
+                    scope.promise=utils.ajax({
+                        method: "POST",
+                        url: "ord/contbah",
+                        mockUrl: "plugins/data/project.detail.json",
+                        data: scope.model
+                    }).then(function(res) {
+                        scope.uid = res.data.body.uid
+                        if (type == "add") {
+                            toastr.info("新增成功！");
+                        } else {
+                            toastr.info("修改成功！");
+                        }
+                        scope.action.load();
+                        $scope.$broadcast('schemaFormRedraw');
+                        scope.refreshtab("refreshcontbah", {});
+
+                    }, function(error) {
+                        $timeout(function() {
+                            scope.model.formstatus = bakstatus
+                        }, 100);
+
+                    });
+                }
+            };
+            scope.action.load();
+        });
+
+});
