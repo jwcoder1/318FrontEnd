@@ -279,27 +279,9 @@ define(function () {
                                     type: 'basEsydatetime',
                                     format: "YYYY"
                                 },
-                                // {
-                                //     title: "年度型合約",
-                                //     key: 'year_status',
-                                //     editstatus: {
-                                //         relation: "and",
-                                //         filedlist: [{
-                                //                 field: "formstatus",
-                                //                 status: "add,edit"
-                                //             } //表单为新增，修改状态
-                                //         ]
-                                //     },
-                                //     type: 'basCheckboxes',
-                                //     css: "cell2",
-                                //     titleMap: [{
-                                //         value: "1",
-                                //         name: "是"
-                                //     }, ],
-                                // },
                                 {
-                                    title: "公費金額",
-                                    key: 'amt',
+                                    title: "年度型合約",
+                                    key: 'year_status',
                                     editstatus: {
                                         relation: "and",
                                         filedlist: [{
@@ -308,20 +290,19 @@ define(function () {
                                             } //表单为新增，修改状态
                                         ]
                                     },
+                                    type: 'basCheckbox',
+                                },
+                                {
+                                    title: "公費金額",
+                                    key: 'amt',
+                                    readonly: true,
                                     type: 'basNumber',
                                     lovtype: ''
                                 },
                                 {
                                     title: "請款金額",
                                     key: 'tot_amt',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
+                                    readonly: true,
                                     type: 'basNumber',
                                     lovtype: ''
                                 },
@@ -349,25 +330,25 @@ define(function () {
                                     type: 'basLov',
                                     lovtype: 'getwork'
                                 },
-                                // {
-                                //     title: "狀態",
-                                //     key: 'status',
-                                //     readonly: true,
-                                //     titleMap: [{
-                                //             value: "10",
-                                //             name: "【尚未請款】"
-                                //         },
-                                //         {
-                                //             value: "20",
-                                //             name: "【部分請款】"
-                                //         },
-                                //         {
-                                //             value: "30",
-                                //             name: "【全部請款】"
-                                //         }
-                                //     ],
-                                //     type: 'basStatus'
-                                // }
+                                {
+                                    title: "狀態",
+                                    key: 'status',
+                                    readonly: true,
+                                    titleMap: [{
+                                            value: "10",
+                                            name: "【尚未請款】"
+                                        },
+                                        {
+                                            value: "20",
+                                            name: "【部分請款】"
+                                        },
+                                        {
+                                            value: "30",
+                                            name: "【全部請款】"
+                                        }
+                                    ],
+                                    type: 'basStatus'
+                                }
                             ]
                         },
                         //下面为行明细
@@ -411,8 +392,10 @@ define(function () {
                                             }, //表单新增状态
                                         ]
                                     },
+                                    //列表刪除後更新金額
                                     click: function (item) {
                                         item.isdel = true;
+                                        scope.counttot_amt();
                                     }
                                 }
                             },
@@ -453,6 +436,9 @@ define(function () {
                                                 status: "view"
                                             }, //表单新增状态
                                         ]
+                                    },
+                                    onchange:(item)=>{
+                                        scope.counttot_amt();
                                     },
                                     type: 'basNumber',
                                     width: 110
@@ -578,8 +564,21 @@ define(function () {
                         }, 100);
 
                     });
+                    
                 }
+                
             };
+            scope.counttot_amt = function () {
+                let tot_amt=0;
+                scope.model.contacrs.forEach(function (item) {
+                    if (!item.isdel) {
+                        tot_amt = tot_amt + (item.amt ? item.amt : 0);
+                        // rec_amt = rec_amt + (item.rec_amt ? item.rec_amt:0);
+                    }
+                }, this);
+                // scope.model.tot_amt = rec_amt;
+                scope.model.amt = tot_amt;
+            }
             scope.action.load();
         });
 

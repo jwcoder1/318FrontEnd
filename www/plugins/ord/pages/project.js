@@ -3,7 +3,9 @@ define(function() {
         function($rootScope, $scope, $location, uiGridConstants, utils, path, settings,
             $timeout, dialog, toastr, ngDialog, qwsys, $http) {
             var scope = $scope;
-            scope.filter = {};
+            scope.filter = { 
+                proj_nbr:""
+            };
             scope.model = {
                 records: 0,
                 content: []
@@ -146,7 +148,7 @@ define(function() {
 
                     scope.promise=utils.ajax({
                         method: 'POST',
-                        url: "ord/contbah/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort="+ scope.datapage.sort,
+                        url: "ord/contcase/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort="+ scope.datapage.sort,
                         mockUrl: "plugins/base/data/orderlines.json",
                         data: scope.filter
                     }).then(function(res) {

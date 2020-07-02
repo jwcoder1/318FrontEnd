@@ -100,7 +100,7 @@ define(function() {
                         }
                     },
                     form: [{
-                            type: "group",
+                            type: "basRegion",
                             items: [{
                                     title: "分類代號",
                                     key: 'cd_type',

@@ -1,0 +1,3 @@
+<div ng-controller="acr.tempbat.detail">
+    <div ng-include="detailUrl"></div>
+</div>

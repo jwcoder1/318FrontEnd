@@ -16,19 +16,19 @@ define(function () {
             scope.detailUrl = "plugins/bas/templates/detail.html";
             scope.config = {
                 listoperation: {
-                    save: {
-                        name: "存檔",
-                        icon: "fa-save",
-                        editstatus: {
-                            relation: "and",
-                            filedlist: [
-                                {field: "formstatus", status: "add,edit"}, //表單為新增，修改狀態
-                            ]
-                        },
-                        action: function (event, form) {
-                            scope.action.save(event, form);
-                        }
-                    },
+                    // save: {
+                    //     name: "存檔",
+                    //     icon: "fa-save",
+                    //     editstatus: {
+                    //         relation: "and",
+                    //         filedlist: [
+                    //             {field: "formstatus", status: "add,edit"}, //表單為新增，修改狀態
+                    //         ]
+                    //     },
+                    //     action: function (event, form) {
+                    //         scope.action.save(event, form);
+                    //     }
+                    // },
                 },
                 form: {
                     schema: {
@@ -42,7 +42,7 @@ define(function () {
                         }
                     },
                     form: [{
-                        type: "group",
+                        type: "basRegion",
                         title: "",
                         items: [
                             // {
@@ -62,6 +62,19 @@ define(function () {
                             gridkey: "acc.accInterface.detail",
                             css: "cell100",
                             action: {
+                                save: {
+                                    name: "存檔",
+                                    icon: "fa-save",
+                                    editstatus: {
+                                        relation: "and",
+                                        filedlist: [
+                                            {field: "formstatus", status: "add,edit"}, //表單為新增，修改狀態
+                                        ]
+                                    },
+                                    action: function (event, form) {
+                                        scope.action.save(event, form);
+                                    }
+                                },
                                 add: {
                                     editstatus: {
                                         relation: "or",
@@ -94,20 +107,7 @@ define(function () {
                                         item.isdel = true;
                                     }
                                 },
-                                // save: {
-                                //     name: "存檔",
-                                //     icon: "fa-save",
-                                //     editstatus: {
-                                //         relation: "and",
-                                //         filedlist: [
-                                //             {field: "formstatus", status: "add,edit"}, //表單為新增，修改狀態
-                                //         ]
-                                //     },
-                                //     action: function (event, form) {
-                                //         console.log(event, form);
-                                //         scope.action.save(event, form);
-                                //     }
-                                // },
+                                
                             },
                             headers: {
                                 "desc": {

@@ -31,8 +31,7 @@ define(function() {
                     "group_nbr": {
                         displayName: "組別代號",
                         width: 120
-                    }
-                     ,
+                    },
                     "group_name": {
                         displayName: "組別名稱",
                         width: 120
@@ -40,15 +39,24 @@ define(function() {
                 },
                 filterItems: {
                     group_name: {
+<<<<<<< .mine
                         type: "basLov",
                         lovtype:"getgroup",
+=======
+                        type: "basDefault",
+                        lovtype: "",
+>>>>>>> .r19
                         name: "group_name",
                         label: "組別名稱"
-                    }
-                     ,
+                    },
                     group_nbr: {
+<<<<<<< .mine
                         type: "basLov",
                         lovtype:"getgroup",
+=======
+                        type: "basLov",
+                        lovtype: "getgroup",
+>>>>>>> .r19
                         name: "group_nbr",
                         label: "組別代號"
                     }
@@ -63,9 +71,9 @@ define(function() {
 
                 load: function() {
 
-                    scope.promise=utils.ajax({
+                    scope.promise = utils.ajax({
                         method: 'POST',
-                        url: "bas/basgroup/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort="+ scope.datapage.sort,
+                        url: "bas/basgroup/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort=" + scope.datapage.sort,
                         mockUrl: "plugins/base/data/orderlines.json",
                         data: scope.filter
                     }).then(function(res) {
@@ -79,11 +87,11 @@ define(function() {
                     };
 
                 },
-                changepage: function(page, size,sort) {
+                changepage: function(page, size, sort) {
                     scope.datapage.page = page;
                     scope.datapage.size = size;
-                    if (sort){
-                       scope.datapage.sort = sort;
+                    if (sort) {
+                        scope.datapage.sort = sort;
                     }
                     scope.action.load();
                 },

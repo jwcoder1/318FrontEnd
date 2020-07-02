@@ -105,7 +105,7 @@ define(function() {
                         }
                     },
                     form: [{
-                            type: "group",
+                            type: "basRegion",
                             items: [{
                                     title: "科目代號",
                                     key: 'cd_type',
