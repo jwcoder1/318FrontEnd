@@ -1,5 +1,5 @@
 define(function () {
-    angular.module('app').controller('acr.contacr',
+    angular.module('app').controller('acr.accounts',
         function ($rootScope, $scope, $location, uiGridConstants, utils, path, settings,
             $timeout, dialog, toastr, ngDialog, qwsys, $http) {
             var scope = $scope;
@@ -105,7 +105,7 @@ define(function () {
 
                     scope.promise = utils.ajax({
                         method: 'POST',
-                        url: "acr/contacr/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort=" + scope.datapage.sort,
+                        url: "acr/accounts/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort=" + scope.datapage.sort,
                         mockUrl: "plugins/base/data/orderlines.json",
                         data: scope.filter
                     }).then(function (res) {
@@ -134,7 +134,7 @@ define(function () {
                 opendetail: function () {
                     var node = {
                         name: "",
-                        url: 'acr/contacr.detail'
+                        url: 'acr/accounts.detail'
                     }
                     $scope.$emit('opencusdetail', node);
                 }

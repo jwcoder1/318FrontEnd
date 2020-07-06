@@ -1,5 +1,5 @@
 define(function () {
-    angular.module('app').controller('ord.project.detail',
+    angular.module('app').controller('acr.aprnbah.detail',
         function ($rootScope, $scope, $location, utils, path, getSingleView, settings,
             $timeout, dialog, toastr, ngDialog, uiGridConstants, qwsys, sysconstant) {
             var scope = $scope;
@@ -112,69 +112,45 @@ define(function () {
                     schema: {
                         "type": "object",
                         "properties": {
-                            "group_nbr": {
-                                "title": "組別",
+                            "nbr": {
+                                "title": "帳單編號",
                                 "type": "string"
                             },
-                            "inv_date": {
-                                "title": "委任日期",
-                                "type": "string"
-                            },
-                            "con_nbr": {
-                                "title": "案件編號",
-                                "type": "string"
+                            "amt": {
+                                "title": "帳單金額",
+                                "type": "number"
                             },
                             "cus_nbr": {
                                 "title": "客戶編號",
                                 "type": "string"
                             },
-                            "nbr": {
-                                "title": "合約編號",
+                            "acr_mon": {
+                                "title": "請款月份",
                                 "type": "string"
                             },
-                            "inv_user": {
-                                "title": "接案人員",
+                            "prn_date": {
+                                "title": "列印日期",
                                 "type": "string"
                             },
-                            "edit_user1": {
-                                "title": "處理人員1",
+                            "temp_desc": {
+                                "title": "請款主旨",
                                 "type": "string"
                             },
-                            "edit_user2": {
-                                "title": "處理人員2",
+                            "acr_mon": {
+                                "title": "請款月份",
                                 "type": "string"
                             },
-                            "items_desc": {
-                                "title": "合約描述",
+                            "temp_desc": {
+                                "title": "內容",
                                 "type": "string"
                             },
-                            "work_desc": {
-                                "title": "工作細項",
+                            "amt": {
+                                "title": "金額",
+                                "type": "number"
+                            },
+                            "status": {
+                                "title": "狀態",
                                 "type": "string"
-                            },
-                            "plan_date": {
-                                "title": "預計完成日期",
-                                "type": "string"
-                            },
-                            "appo_letter": {
-                                "title": "委任書上傳",
-                                "type": "string"
-                            },
-                            "proj_status": {
-                                "title": "核准否",
-                                "type": "Boolean"
-                            },
-                            "over_date": {
-                                "title": "完成日期",
-                                "type": "string"
-                            },
-                            "close_date": {
-                                "title": "結案日期",
-                                "type": "string"
-                            },
-                            "close_flag": {
-                                "title": "結案否",
-                                "type": "Boolean"
                             }
                         }
                     },
@@ -182,8 +158,8 @@ define(function () {
                             type: "group",
                             title: "",
                             items: [{
-                                    title: "組別",
-                                    key: 'group_nbr',
+                                    title: "帳單號碼",
+                                    key: 'nbr',
                                     editstatus: {
                                         relation: "and",
                                         filedlist: [{
@@ -192,22 +168,13 @@ define(function () {
                                             } //表单为新增，修改状态
                                         ]
                                     },
-                                    relationfield: [{
-                                        findfield: "group_name",
-                                        tofield: "group_name"
-                                    }, ],
-                                    additionalField: {
-                                        key: "group_name",
-                                        readonly: true,
-                                        type: "basString"
-                                    },
-                                    nameField: "group_name",
-                                    type: 'basLov',
-                                    lovtype: 'getgroup'
+                                    type: 'basDefault',
+                                    lovtype: ''
                                 },
+                                //虛擬欄位
                                 {
-                                    title: "委任日期",
-                                    key: 'inv_date',
+                                    title: "帳單日期",
+                                    key: 'date',
                                     editstatus: {
                                         relation: "and",
                                         filedlist: [{
@@ -217,18 +184,21 @@ define(function () {
                                         ]
                                     },
                                     type: 'basEsydatetime',
+                                    lovtype: ''
                                 },
                                 {
-                                    title: "專案編號",
-                                    key: 'con_nbr',
-                                    // editstatus: {
-                                    //     relation: "and",
-                                    //     filedlist: [
-                                    //         { field: "formstatus", status: "add,edit" } //表单为新增，修改状态
-                                    //     ]
-                                    // },
-                                    readonly: true,
-                                    type: 'basDefault',
+                                    title: "帳單總額",
+                                    key: 'amt',
+                                    editstatus: {
+                                        relation: "and",
+                                        filedlist: [{
+                                                field: "formstatus",
+                                                status: "add,edit"
+                                            } //表单为新增，修改状态
+                                        ]
+                                    },
+                                    type: 'basNumber',
+                                    lovtype: ''
                                 },
                                 {
                                     title: "客戶編號",
@@ -255,8 +225,35 @@ define(function () {
                                     lovtype: 'getcus'
                                 },
                                 {
-                                    title: "合約編號",
-                                    key: 'nbr',
+                                    title: "結帳月份",
+                                    key: 'acr_mon',
+                                    editstatus: {
+                                        relation: "and",
+                                        filedlist: [{
+                                                field: "formstatus",
+                                                status: "add,edit"
+                                            } //表单为新增，修改状态
+                                        ]
+                                    },
+                                    type: 'basEsydatetime',
+                                    format: "YYYYMM"
+                                },
+                                {
+                                    title: "列印日期",
+                                    key: 'prn_date',
+                                    editstatus: {
+                                        relation: "and",
+                                        filedlist: [{
+                                                field: "formstatus",
+                                                status: "add,edit"
+                                            } //表单为新增，修改状态
+                                        ]
+                                    },
+                                    type: 'basEsydatetime',
+                                },
+                                {
+                                    title: "請款主旨",
+                                    key: 'temp_desc',
                                     editstatus: {
                                         relation: "and",
                                         filedlist: [{
@@ -266,221 +263,120 @@ define(function () {
                                         ]
                                     },
                                     type: 'basDefault',
-                                },
-                                {
-                                    title: "接案人員",
-                                    key: 'inv_user',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    relationfield: [{
-                                        findfield: "s_name",
-                                        tofield: "s_name"
-                                    }, ],
-                                    additionalField: {
-                                        key: "s_name",
-                                        readonly: true,
-                                        type: "basString"
-                                    },
-                                    nameField: "s_name",
-                                    type: 'basLov',
-                                    lovtype: 'getstaff'
-                                },
-                                {
-                                    title: "處理人員1",
-                                    key: 'edit_user1',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    relationfield: [{
-                                        findfield: "s_name",
-                                        tofield: "s_name1"
-                                    }, ],
-                                    additionalField: {
-                                        key: "s_name1",
-                                        readonly: true,
-                                        type: "basString"
-                                    },
-                                    nameField: "s_name1",
-                                    type: 'basLov',
-                                    lovtype: 'getstaff'
-                                },
-                                {
-                                    title: "處理人員2",
-                                    key: 'edit_user2',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    relationfield: [{
-                                        findfield: "s_name",
-                                        tofield: "s_name2"
-                                    }, ],
-                                    additionalField: {
-                                        key: "s_name2",
-                                        readonly: true,
-                                        type: "basString"
-                                    },
-                                    nameField: "s_name2",
-                                    type: 'basLov',
-                                    lovtype: 'getstaff'
-                                },
-                                {
-                                    title: "工作內容",
-                                    key: 'items_desc',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    relationfield: [{
-                                        findfield: "work_desc",
-                                        tofield: "work_desc"
-                                    }, ],
-                                    additionalField: {
-                                        key: "work_desc",
-                                        readonly: true,
-                                        type: "basString"
-                                    },
-                                    nameField: "work_desc",
-                                    type: 'basLov',
-                                    lovtype: 'getwork'
-                                },
-                                {
-                                    title: "工作細項",
-                                    key: 'work_desc',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    css: "cell100",
-                                    type: 'basTextarea',
-                                },
-                                {
-                                    title: "預計完成日期",
-                                    key: 'plan_date',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basEsydatetime',
-                                },
-                                {
-                                    title: "委任書上傳",
-                                    key: 'appo_letter',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    css: "cell100",
-                                    type: 'basUploader',
-                                },
-                                {
-                                    title: "主管核准",
-                                    key: 'proj_status',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basRadiosinline',
-                                    css: "cell100",
-                                    titleMap: [{
-                                            value: "1",
-                                            name: "未核准"
-                                        },
-                                        {
-                                            value: "2",
-                                            name: "已核准"
-                                        },
-                                    ],
-                                },
-                                {
-                                    title: "完成日期",
-                                    key: 'over_date',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basEsydatetime',
-                                },
-                                {
-                                    title: "結案日期",
-                                    key: 'close_date',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basEsydatetime',
-                                },
-                                {
-                                    title: "結案核准",
-                                    key: 'close_flag',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    css: "cell100",
-                                    type: 'basRadiosinline',
-
-                                    titleMap: [{
-                                            value: "1",
-                                            name: "未核准"
-                                        },
-                                        {
-                                            value: "2",
-                                            name: "已核准"
-                                        },
-                                    ],
+                                    css:"cell2"
                                 }
                             ]
+                        },
+                        //下面为行明细
+                        {
+                            type: 'basLine',
+                            css: "cell100 ",
+                            title: ""
+                        },
+                        {
+                            title: "",
+                            key: 'aprnbat.detail',
+                            type: "basEditgrid",
+                            gridkey: "acr.aprnbah.detail",
+                            css: "cell100",
+                            action: {
+                                add: {
+                                    editstatus: {
+                                        relation: "or",
+                                        editstatus: {
+                                            relation: "and",
+                                            filedlist: [{
+                                                    field: "formstatus",
+                                                    status: "add,edit"
+                                                }, //表单为新增，修改状态
+                                            ]
+                                        }
+                                    },
+                                    click: function () {
+                                        var item = {
+                                            isdel: false
+                                        }
+                                        scope.model.aprnbat.detail.push(item);
+                                    }
+                                },
+                                del: {
+                                    editstatus: {
+                                        relation: "or",
+                                        filedlist: [{
+                                                field: "formstatus",
+                                                status: "add,edit"
+                                            }, //表单新增状态
+                                        ]
+                                    },
+                                    click: function (item) {
+                                        item.isdel = true;
+                                    }
+                                }
+                            },
+                            headers: {
+                                "acr_mon": {
+                                    displayName: "預計請款月份",
+                                    readonlystatus: {
+                                        relation: "and",
+                                        filedlist: [{
+                                                field: "formstatus",
+                                                status: "view"
+                                            }, //表单新增状态
+                                        ]
+                                    },
+                                    type: 'basEsydatetime',
+                                    format: "YYYYMM",
+                                    width: 110
+                                },
+                                "temp_desc": {
+                                    displayName: "請款內容",
+                                    readonlystatus: {
+                                        relation: "and",
+                                        filedlist: [{
+                                                field: "formstatus",
+                                                status: "view"
+                                            }, //表单新增状态
+                                        ]
+                                    },
+                                    type: 'basDefault',
+                                    lovtype: '',
+                                    width: 110
+                                },
+                                "amt": {
+                                    displayName: "金額",
+                                    readonlystatus: {
+                                        relation: "and",
+                                        filedlist: [{
+                                                field: "formstatus",
+                                                status: "view"
+                                            }, //表单新增状态
+                                        ]
+                                    },
+                                    type: 'basNumber',
+                                    lovtype: '',
+                                    width: 110
+                                },
+                                "status": {
+                                    displayName: "選擇",
+                                    readonlystatus: {
+                                        relation: "and",
+                                        filedlist: [{
+                                                field: "formstatus",
+                                                status: "view"
+                                            }, //表单新增状态
+                                        ]
+                                    },
+                                    type: 'basCheckboxes',
+                                    titleMap: [
+                                        { value: "1", name: "勾選" },
+                                    ],
+                                    width: 110
+                                }
+                            }
+
                         }
-                        //下面为分组B
-                        //下面为分组C
+
+
                     ]
                 }
             };
@@ -499,13 +395,13 @@ define(function () {
                     dialog.confirm('确定删除当前数据?').then(function () {
                         scope.promise = utils.ajax({
                             method: 'DELETE',
-                            url: "ord/contcase/" + scope.model.uid,
-                            mockUrl: "plugins/data/project.detail.json"
+                            url: "acr/tempbat/" + scope.model.uid,
+                            mockUrl: "plugins/data/aprnbah.detail.json"
                         }).then(function (res) {
                             toastr.info("数据删除成功!!!");
                             scope.uid = "";
                             scope.action.add();
-                            scope.refreshtab("refreshcontbah", {});
+                            scope.refreshtab("refreshtempbat", {});
 
                         });
                     });
@@ -523,8 +419,8 @@ define(function () {
                     if (scope.uid) {
                         scope.promise = utils.ajax({
                             method: 'GET',
-                            url: "ord/contcase/" + scope.uid,
-                            mockUrl: "plugins/data/project.detail.json"
+                            url: "acr/tempbat/" + scope.uid,
+                            mockUrl: "plugins/data/aprnbah.detail.json"
                         }).then(function (res) {
                             var data = res.data;
                             scope.model = data.body;
@@ -557,8 +453,8 @@ define(function () {
                     scope.model.formstatus = "read";
                     scope.promise = utils.ajax({
                         method: "POST",
-                        url: "ord/contcase",
-                        mockUrl: "plugins/data/project.detail.json",
+                        url: "acr/tempbat",
+                        mockUrl: "plugins/data/aprnbah.detail.json",
                         data: scope.model
                     }).then(function (res) {
                         scope.uid = res.data.body.uid
@@ -569,7 +465,7 @@ define(function () {
                         }
                         scope.action.load();
                         $scope.$broadcast('schemaFormRedraw');
-                        scope.refreshtab("refreshcontbah", {});
+                        scope.refreshtab("refreshtempbat", {});
 
                     }, function (error) {
                         $timeout(function () {

@@ -206,7 +206,7 @@ define(function () {
                                 },
                                 {
                                     title: "專案編號",
-                                    key: 'con_nbr',
+                                    key: 'proj_nbr',
                                     
                                     // editstatus: {
                                     //     relation: "and",

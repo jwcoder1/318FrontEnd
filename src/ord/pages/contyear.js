@@ -1,5 +1,5 @@
 define(function () {
-    angular.module('app').controller('ord.annual_contract',
+    angular.module('app').controller('ord.contyear',
         function ($rootScope, $scope, $location, utils, path, getSingleView, settings,
             $timeout, dialog, toastr, ngDialog, uiGridConstants, qwsys, sysconstant) {
             var scope = $scope;
@@ -15,21 +15,6 @@ define(function () {
             scope.detailUrl = "plugins/bas/templates/detail.html";
             scope.config = {
                 listoperation: {
-                    add: {
-                        name: "新增",
-                        icon: "fa-plus",
-                        readonlystatus: {
-                            relation: "and",
-                            filedlist: [{
-                                    field: "formstatus",
-                                    status: "add,edit,read"
-                                } //表单新增状态
-                            ]
-                        },
-                        action: function (event, form) {
-                            scope.action.add(event);
-                        }
-                    },
                     save: {
                         name: "保存",
                         icon: "fa-save",
@@ -58,21 +43,6 @@ define(function () {
                         },
                         action: function (event, form) {
                             scope.action.undo(event);
-                        }
-                    },
-                    edit: {
-                        name: "修改",
-                        icon: "fa-edit",
-                        editstatus: {
-                            relation: "and",
-                            filedlist: [{
-                                    field: "formstatus",
-                                    status: "view"
-                                } //查询状态                              
-                            ]
-                        },
-                        action: function (event, form) {
-                            scope.action.edit(event);
                         }
                     },
                     del: { //分配状态下还可以删除
@@ -219,9 +189,9 @@ define(function () {
                         },
                         {
                             title: "",
-                            key: 'annual_contract',
+                            key: 'contyear',
                             type: "basEditgrid",
-                            gridkey: "ord.annual_contract",
+                            gridkey: "ord.contyear",
                             css: "cell100",
                             action: {
                                 add: {
@@ -240,7 +210,7 @@ define(function () {
                                         var item = {
                                             isdel: false
                                         }
-                                        scope.model.annual_contract.push(item);
+                                        scope.model.contyear.push(item);
                                     }
                                 },
                                 del: {
@@ -407,8 +377,8 @@ define(function () {
                     dialog.confirm('确定删除当前数据?').then(function () {
                         scope.promise = utils.ajax({
                             method: 'DELETE',
-                            url: "ord/contbah/" + scope.model.uid,
-                            mockUrl: "plugins/data/annual_contract.json"
+                            url: "ord/contyear/" + scope.model.uid,
+                            mockUrl: "plugins/data/contyear.json"
                         }).then(function (res) {
                             toastr.info("数据删除成功!!!");
                             scope.uid = "";
@@ -431,8 +401,8 @@ define(function () {
                     if (scope.uid) {
                         scope.promise = utils.ajax({
                             method: 'GET',
-                            url: "ord/contbah/" + scope.uid,
-                            mockUrl: "plugins/data/annual_contract.json"
+                            url: "ord/contyear/" + scope.uid,
+                            mockUrl: "plugins/data/contyear.json"
                         }).then(function (res) {
                             var data = res.data;
                             scope.model = data.body;
@@ -465,8 +435,8 @@ define(function () {
                     scope.model.formstatus = "read";
                     scope.promise = utils.ajax({
                         method: "POST",
-                        url: "ord/contbah",
-                        mockUrl: "plugins/data/annual_contract.json",
+                        url: "ord/contyear",
+                        mockUrl: "plugins/data/contyear.json",
                         data: scope.model
                     }).then(function (res) {
                         scope.uid = res.data.body.uid

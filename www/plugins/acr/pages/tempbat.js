@@ -56,16 +56,15 @@ define(function () {
                         name: "cus_nbr",
                         label: "客戶編號"
                     },
-                    //虛擬欄位
-                    cus_name: {
-                        type: "basLov",
-                        lovtype: "getcus",
-                        name: "cus_name",
-                        label: "客戶名稱"
-                    },
+                    // //虛擬欄位
+                    // cus_name: {
+                    //     type: "basLov",
+                    //     lovtype: "getcus",
+                    //     name: "cus_name",
+                    //     label: "客戶名稱"
+                    // },
                     nbr: {
-                        type: "basLov",
-                        lovtype: "",
+                        type: "basDefault",
                         name: "nbr",
                         label: "合約編號"
                     }

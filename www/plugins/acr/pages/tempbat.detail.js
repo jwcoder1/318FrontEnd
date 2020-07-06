@@ -159,32 +159,25 @@ define(function () {
                                     type: 'basLov',
                                     lovtype: 'getcus'
                                 },
-                                {  //虛擬欄位
-                                    title: "客戶名稱",
-                                    key: 'cus_name',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basLov',
-                                    lovtype: 'getcus'
-                                },
+                                // {  //虛擬欄位
+                                //     title: "客戶名稱",
+                                //     key: 'cus_name',
+                                //     editstatus: {
+                                //         relation: "and",
+                                //         filedlist: [{
+                                //                 field: "formstatus",
+                                //                 status: "add,edit"
+                                //             } //表单为新增，修改状态
+                                //         ]
+                                //     },
+                                //     type: 'basLov',
+                                //     lovtype: 'getcus'
+                                // },
                                 {
                                     title: "合約編號",
                                     key: 'nbr',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basLov',
+                                    readonly:true,
+                                    type: 'basDefault',
                                 }
                             ]
                         },
@@ -287,8 +280,8 @@ define(function () {
                                             }, //表单新增状态
                                         ]
                                     },
-                                    type: 'basDefault',
-                                    lovtype: '',
+                                    type: 'basEsydatetime',
+                                    format:"YYYYMM",
                                     width: 110
                                 },
                                 "status": {

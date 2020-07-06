@@ -1,11 +1,11 @@
 define(function() {
-    angular.module('app').controller('ord.project',
+    angular.module('app').controller('ord.contcase',
         function($rootScope, $scope, $location, uiGridConstants, utils, path, settings,
             $timeout, dialog, toastr, ngDialog, qwsys, $http) {
             var scope = $scope;
-            scope.filter = { 
-                proj_nbr:""
-            };
+            // scope.filter = { 
+            //     proj_nbr:"null"
+            // };
             scope.model = {
                 records: 0,
                 content: []
@@ -18,7 +18,7 @@ define(function() {
             scope.promise = null;
             scope.listUrl = "plugins/bas/templates/list.html";
             scope.config = {
-                gridkey: "project",
+                gridkey: "contcase",
                 title: "專案管理",
                 listoperation: {
                     add: {
@@ -31,7 +31,7 @@ define(function() {
                 },
                 headers: {
                     "con_nbr": {
-                        displayName: "案號",
+                        displayName: "案號",//合約編號
                         width: 120
                     }
                      ,
@@ -59,7 +59,7 @@ define(function() {
                         width: 120
                     }
                      ,
-                    "work_desc": {
+                    "work_desc1": {
                         displayName: "工作細項",
                         width: 120
                     }
@@ -134,7 +134,23 @@ define(function() {
                         lovtype:"",
                         name: "close_dateb",
                         label: "結案日期T"
+                    },
+                    isproject:{    //虛擬欄位
+                        type: "basLov",
+                        lovtype: "select",
+                        titleMap: [{
+                                value: 1,
+                                name: "未列專案"
+                            },
+                            {
+                                value: 2,
+                                name: "已列專案"
+                            },
+                        ],
+                        name: "isproject",
+                        label: "是否為專案"
                     }
+                    
                 }
             }
 
@@ -142,6 +158,7 @@ define(function() {
                 add: function() {
                     $rootScope.uid = "";
                     scope.action.opendetail();
+
                 },
 
                 load: function() {
@@ -153,6 +170,7 @@ define(function() {
                         data: scope.filter
                     }).then(function(res) {
                         scope.model = res.data.body;
+                        scope.model.isproject="1";
                     });
 
                 },
@@ -177,7 +195,7 @@ define(function() {
                 opendetail: function() {
                     var node = {
                         name: "專案資料維護",
-                        url: 'ord/project.detail'
+                        url: 'ord/contcase.detail'
                     }
                     $scope.$emit('opencusdetail', node);
                 }

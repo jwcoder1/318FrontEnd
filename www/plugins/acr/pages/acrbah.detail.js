@@ -1,5 +1,5 @@
 define(function () {
-    angular.module('app').controller('acr.acrbah',
+    angular.module('app').controller('acr.acrbah.detail',
         function ($rootScope, $scope, $location, utils, path, getSingleView, settings,
             $timeout, dialog, toastr, ngDialog, uiGridConstants, qwsys, sysconstant) {
             var scope = $scope;
@@ -126,14 +126,14 @@ define(function () {
                             }
                         }
                     },
-                    form: [
-                        {
+                    form: [{
                             type: "group",
                             title: "",
                             items: [{
                                     title: "收款單號",
                                     key: 'nbr',
-                                    type: 'basString',
+                                    type: 'basLov',
+                                    lovtype: ''
                                 },
                                 {
                                     title: "收款日期",
@@ -198,13 +198,6 @@ define(function () {
                                     key: 'other_amt',
                                     type: 'basNumber',
                                 },
-                            ]
-                        },
-                        {
-                            type: "group",
-                            title: "",
-                            css: "max-1",
-                            items:[
                                 {
                                     title: "現金金額",
                                     key: 'cash_amt',
@@ -252,45 +245,10 @@ define(function () {
                                 {
                                     title: "明細",
                                     items: [{
-                                        key: 'acrbah',
+                                        key: '',
                                         type: "basEditgrid",
-                                        gridkey: "acr.acrbah",
+                                        gridkey: "acr.acrbah.detail",
                                         css: "cell100",
-                                        action: {
-                                            add: {
-                                                editstatus: {
-                                                    relation: "or",
-                                                    editstatus: {
-                                                        relation: "and",
-                                                        filedlist: [{
-                                                                field: "formstatus",
-                                                                status: "add,edit"
-                                                            }, //表单为新增，修改状态
-                                                        ]
-                                                    }
-                                                },
-                                                click: function () {
-                                                    var item = {
-                                                        isdel: false
-                                                    }
-                                                    scope.model.acrbah.push(item);
-                                                }
-                                            },
-                                            del: {
-                                                editstatus: {
-                                                    relation: "or",
-                                                    filedlist: [{
-                                                            field: "formstatus",
-                                                            status: "add,edit"
-                                                        }, //表单新增状态
-                                                    ]
-                                                },
-                                                //列表刪除後更新金額
-                                                click: function (item) {
-                                                    item.isdel = true;
-                                                }
-                                            }
-                                        },
                                         headers: {
                                             "status": {
                                                 displayName: "科目",
@@ -330,50 +288,14 @@ define(function () {
                                 {
                                     title: "沖款",
                                     items: [{
-                                        key: 'acrbah',
+                                        key: '',
                                         type: "basEditgrid",
-                                        gridkey: "acr.acrbah",
+                                        gridkey: "acr.acrbah.detail",
                                         css: "cell100",
-                                        action: {
-                                            add: {
-                                                editstatus: {
-                                                    relation: "or",
-                                                    editstatus: {
-                                                        relation: "and",
-                                                        filedlist: [{
-                                                                field: "formstatus",
-                                                                status: "add,edit"
-                                                            }, //表单为新增，修改状态
-                                                        ]
-                                                    }
-                                                },
-                                                click: function () {
-                                                    var item = {
-                                                        isdel: false
-                                                    }
-                                                    scope.model.acrbah.push(item);
-                                                }
-                                            },
-                                            del: {
-                                                editstatus: {
-                                                    relation: "or",
-                                                    filedlist: [{
-                                                            field: "formstatus",
-                                                            status: "add,edit"
-                                                        }, //表单新增状态
-                                                    ]
-                                                },
-                                                //列表刪除後更新金額
-                                                click: function (item) {
-                                                    item.isdel = true;
-                                                    scope.counttot_amt();
-                                                }
-                                            }
-                                        },
                                         headers: {
                                             "nbr": {
                                                 displayName: "合約號碼",
-                                                type: 'basstring',
+                                                type: 'basNumber',
                                                 width: 110
                                             },
                                             "desc": {
@@ -418,7 +340,7 @@ define(function () {
                         scope.promise = utils.ajax({
                             method: 'DELETE',
                             url: "acr/acrbah/" + scope.model.uid,
-                            mockUrl: "plugins/data/acrbah.json"
+                            mockUrl: "plugins/data/acrbah.detail.json"
                         }).then(function (res) {
                             toastr.info("数据删除成功!!!");
                             scope.uid = "";
@@ -442,7 +364,7 @@ define(function () {
                         scope.promise = utils.ajax({
                             method: 'GET',
                             url: "acr/acrbah/" + scope.uid,
-                            mockUrl: "plugins/data/acrbah.json"
+                            mockUrl: "plugins/data/acrbah.detail.json"
                         }).then(function (res) {
                             var data = res.data;
                             scope.model = data.body;
@@ -476,7 +398,7 @@ define(function () {
                     scope.promise = utils.ajax({
                         method: "POST",
                         url: "acr/acrbah",
-                        mockUrl: "plugins/data/acrbah.json",
+                        mockUrl: "plugins/data/acrbah.detail.json",
                         data: scope.model
                     }).then(function (res) {
                         scope.uid = res.data.body.uid
@@ -497,17 +419,6 @@ define(function () {
                     });
                 }
             };
-            scope.counttot_amt = function () {
-                let tot_amt=0;
-                scope.model.contacrs.forEach(function (item) {
-                    if (!item.isdel) {
-                        tot_amt = tot_amt + (item.amt ? item.amt : 0);
-                        // rec_amt = rec_amt + (item.rec_amt ? item.rec_amt:0);
-                    }
-                }, this);
-                // scope.model.tot_amt = rec_amt;
-                scope.model.amt = tot_amt;
-            }
             scope.action.load();
         });
 
