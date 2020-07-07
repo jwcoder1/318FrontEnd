@@ -1,6 +1,6 @@
-define(function () {
+define(function() {
     angular.module('app').controller('acr.tempbat.detail',
-        function ($rootScope, $scope, $location, utils, path, getSingleView, settings,
+        function($rootScope, $scope, $location, utils, path, getSingleView, settings,
             $timeout, dialog, toastr, ngDialog, uiGridConstants, qwsys, sysconstant) {
             var scope = $scope;
             scope.uid = "";
@@ -26,7 +26,7 @@ define(function () {
                                 } //表单新增状态
                             ]
                         },
-                        action: function (event, form) {
+                        action: function(event, form) {
                             scope.action.add(event);
                         }
                     },
@@ -41,7 +41,7 @@ define(function () {
                                 }, //表单为新增，修改状态
                             ]
                         },
-                        action: function (event, form) {
+                        action: function(event, form) {
                             scope.action.save(event, form);
                         }
                     },
@@ -56,7 +56,7 @@ define(function () {
                                 }, //表单为新增，修改状态
                             ]
                         },
-                        action: function (event, form) {
+                        action: function(event, form) {
                             scope.action.undo(event);
                         }
                     },
@@ -71,7 +71,7 @@ define(function () {
                                 } //查询状态                              
                             ]
                         },
-                        action: function (event, form) {
+                        action: function(event, form) {
                             scope.action.edit(event);
                         }
                     },
@@ -87,7 +87,7 @@ define(function () {
                                 } //表单查询状态                             
                             ]
                         },
-                        action: function (event, form) {
+                        action: function(event, form) {
                             scope.action.del(event);
                         }
                     },
@@ -103,7 +103,7 @@ define(function () {
                                 }, //表单为新增，修改状态
                             ]
                         },
-                        action: function (event, form) {
+                        action: function(event, form) {
                             scope.action.load();
                         }
                     }
@@ -156,6 +156,10 @@ define(function () {
                                             } //表单为新增，修改状态
                                         ]
                                     },
+                                    onchange: function() {
+                                        scope.action.getbat();
+
+                                    },
                                     type: 'basLov',
                                     lovtype: 'getcus'
                                 },
@@ -176,8 +180,13 @@ define(function () {
                                 {
                                     title: "合約編號",
                                     key: 'nbr',
-                                    readonly:true,
-                                    type: 'basDefault',
+                                    // readonly:true,
+                                    type: 'basLov',
+                                    onchange: function() {
+                                        scope.action.getbat();
+
+                                    },
+                                    lovtype: 'getcontract'
                                 }
                             ]
                         },
@@ -189,9 +198,9 @@ define(function () {
                         },
                         {
                             title: "",
-                            key: 'tempbat',
+                            key: 'tempbats',
                             type: "basEditgrid",
-                            gridkey: "acr.tempbat.detail",
+                            gridkey: "acr.tempbats.detail",
                             css: "cell100",
                             action: {
                                 add: {
@@ -206,11 +215,11 @@ define(function () {
                                             ]
                                         }
                                     },
-                                    click: function () {
+                                    click: function() {
                                         var item = {
                                             isdel: false
                                         }
-                                        scope.model.tempbat.push(item);
+                                        scope.model.tempbats.push(item);
                                     }
                                 },
                                 del: {
@@ -222,7 +231,7 @@ define(function () {
                                             }, //表单新增状态
                                         ]
                                     },
-                                    click: function (item) {
+                                    click: function(item) {
                                         item.isdel = true;
                                     }
                                 }
@@ -238,8 +247,8 @@ define(function () {
                                             }, //表单新增状态
                                         ]
                                     },
-                                    type: 'basDefault',
-                                    lovtype: '',
+                                    type: 'basLov',
+                                    lovtype: 'gettemp',
                                     width: 110
                                 },
                                 "temp_desc": {
@@ -252,8 +261,8 @@ define(function () {
                                             }, //表单新增状态
                                         ]
                                     },
-                                    type: 'basDefault',
-                                    lovtype: '',
+                                    type: 'basLov',
+                                    lovtype: 'gettemp',
                                     width: 110
                                 },
                                 "amt": {
@@ -281,7 +290,7 @@ define(function () {
                                         ]
                                     },
                                     type: 'basEsydatetime',
-                                    format:"YYYYMM",
+                                    format: "YYYYMM",
                                     width: 110
                                 },
                                 "status": {
@@ -311,23 +320,23 @@ define(function () {
                 }
             };
             scope.action = {
-                add: function (event) {
+                add: function(event) {
                     $scope.$broadcast('schemaFormRedraw');
                     scope.model = {
                         formstatus: "add" //edit,view
                     }
                 },
-                edit: function () {
+                edit: function() {
                     scope.model.formstatus = "edit"
                     $scope.$broadcast('schemaFormRedraw');
                 },
-                del: function () {
-                    dialog.confirm('确定删除当前数据?').then(function () {
+                del: function() {
+                    dialog.confirm('确定删除当前数据?').then(function() {
                         scope.promise = utils.ajax({
                             method: 'DELETE',
                             url: "acr/tempbat/" + scope.model.uid,
                             mockUrl: "plugins/data/tempbat.detail.json"
-                        }).then(function (res) {
+                        }).then(function(res) {
                             toastr.info("数据删除成功!!!");
                             scope.uid = "";
                             scope.action.add();
@@ -336,7 +345,7 @@ define(function () {
                         });
                     });
                 },
-                undo: function () {
+                undo: function() {
                     if (scope.model.formstatus == "add") {
                         scope.model = angular.copy(scope.bakmodel);
                     } else {
@@ -345,13 +354,33 @@ define(function () {
                     }
                     scope.model.formstatus = "view";
                 },
-                load: function () {
+                getbat: function() {
+                    if (!scope.model.cus_nbr || !scope.model.nbr) {
+                        return;
+                    }
+                    var para = {
+                        cus_nbr: scope.model.cus_nbr,
+                        nbr: scope.model.nbr
+                    }
+                    scope.promise = utils.ajax({
+                        method: "POST",
+                        url: "acr/tempbat/getbat",
+                        mockUrl: "plugins/data/tempbat.detail.json",
+                        data: para
+                    }).then(function(res) {
+                        var tempbats = res.data.body;
+                        tempbats.forEach(element => {
+                            scope.model.tempbats.push(element);
+                        });
+                    });
+                },
+                load: function() {
                     if (scope.uid) {
                         scope.promise = utils.ajax({
                             method: 'GET',
                             url: "acr/tempbat/" + scope.uid,
                             mockUrl: "plugins/data/tempbat.detail.json"
-                        }).then(function (res) {
+                        }).then(function(res) {
                             var data = res.data;
                             scope.model = data.body;
                             scope.model.formstatus = "view";
@@ -367,7 +396,15 @@ define(function () {
                     }
 
                 },
-                save: function (event, form) {
+                save: function(event, form) {
+                    console.log(scope.model);
+                    var tempbats = scope.model.tempbats;
+                    tempbats.forEach(element => {
+                        element.cus_nbr = scope.model.cus_nbr;
+                        element.nbr = scope.model.nbr;
+                    });
+                    console.log(tempbats);
+
                     for (var p in scope.model) {
                         if (scope.model[p] === null) {
                             delete scope.model[p];
@@ -386,7 +423,7 @@ define(function () {
                         url: "acr/tempbat",
                         mockUrl: "plugins/data/tempbat.detail.json",
                         data: scope.model
-                    }).then(function (res) {
+                    }).then(function(res) {
                         scope.uid = res.data.body.uid
                         if (type == "add") {
                             toastr.info("新增成功！");
@@ -397,8 +434,8 @@ define(function () {
                         $scope.$broadcast('schemaFormRedraw');
                         scope.refreshtab("refreshtempbat", {});
 
-                    }, function (error) {
-                        $timeout(function () {
+                    }, function(error) {
+                        $timeout(function() {
                             scope.model.formstatus = bakstatus
                         }, 100);
 

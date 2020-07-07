@@ -134,7 +134,7 @@ define(function () {
                                 "title": "合約描述",
                                 "type": "string"
                             },
-                            "work_desc1": {
+                            "work_content": {
                                 "title": "工作細項",
                                 "type": "string"
                             },
@@ -345,7 +345,7 @@ define(function () {
                                 },
                                 {
                                     title: "工作細項",
-                                    key: 'work_desc1',
+                                    key: 'work_content',
                                     editstatus: {
                                         relation: "and",
                                         filedlist: [{

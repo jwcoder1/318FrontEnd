@@ -1,5 +1,5 @@
 define(function () {
-    angular.module('app').controller('acr.aprnbah.detail',
+    angular.module('app').controller('acr.tempbat.detail',
         function ($rootScope, $scope, $location, utils, path, getSingleView, settings,
             $timeout, dialog, toastr, ngDialog, uiGridConstants, qwsys, sysconstant) {
             var scope = $scope;
@@ -112,32 +112,16 @@ define(function () {
                     schema: {
                         "type": "object",
                         "properties": {
-                            "nbr": {
-                                "title": "帳單編號",
-                                "type": "string"
-                            },
-                            "amt": {
-                                "title": "帳單金額",
-                                "type": "number"
-                            },
                             "cus_nbr": {
                                 "title": "客戶編號",
                                 "type": "string"
                             },
-                            "acr_mon": {
-                                "title": "請款月份",
+                            "nbr": {
+                                "title": "合約編號",
                                 "type": "string"
                             },
-                            "prn_date": {
-                                "title": "列印日期",
-                                "type": "string"
-                            },
-                            "temp_desc": {
-                                "title": "請款主旨",
-                                "type": "string"
-                            },
-                            "acr_mon": {
-                                "title": "請款月份",
+                            "temp_nbr": {
+                                "title": "項目編號",
                                 "type": "string"
                             },
                             "temp_desc": {
@@ -147,6 +131,10 @@ define(function () {
                             "amt": {
                                 "title": "金額",
                                 "type": "number"
+                            },
+                            "acr_mon": {
+                                "title": "請款月份",
+                                "type": "string"
                             },
                             "status": {
                                 "title": "狀態",
@@ -158,42 +146,6 @@ define(function () {
                             type: "group",
                             title: "",
                             items: [{
-                                    title: "帳單號碼",
-                                    key: 'nbr',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basDefault',
-                                    lovtype: ''
-                                },
-                                //虛擬欄位
-                                {
-                                    title: "帳單日期",
-                                    key: 'date',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basEsydatetime',
-                                    lovtype: ''
-                                },
-                                {
-                                    title: "帳單總額",
-                                    key: 'amt',
-                                    readonly: true,
-                                    type: 'basNumber',
-                                    lovtype: ''
-                                },
-                                {
                                     title: "客戶編號",
                                     key: 'cus_nbr',
                                     editstatus: {
@@ -204,59 +156,29 @@ define(function () {
                                             } //表单为新增，修改状态
                                         ]
                                     },
-                                    relationfield: [{
-                                        findfield: "cus_alias",
-                                        tofield: "cus_alias"
-                                    }, ],
-                                    additionalField: {
-                                        key: "cus_alias",
-                                        readonly: true,
-                                        type: "basString"
-                                    },
-                                    nameField: "cus_alias",
                                     type: 'basLov',
                                     lovtype: 'getcus'
                                 },
+                                // {  //虛擬欄位
+                                //     title: "客戶名稱",
+                                //     key: 'cus_name',
+                                //     editstatus: {
+                                //         relation: "and",
+                                //         filedlist: [{
+                                //                 field: "formstatus",
+                                //                 status: "add,edit"
+                                //             } //表单为新增，修改状态
+                                //         ]
+                                //     },
+                                //     type: 'basLov',
+                                //     lovtype: 'getcus'
+                                // },
                                 {
-                                    title: "結帳月份",
-                                    key: 'acr_mon',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basEsydatetime',
-                                    format: "YYYYMM"
-                                },
-                                {
-                                    title: "列印日期",
-                                    key: 'prn_date',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basEsydatetime',
-                                },
-                                {
-                                    title: "請款主旨",
-                                    key: 'temp_desc',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
-                                    type: 'basDefault',
-                                    css:"cell2"
+                                    title: "合約編號",
+                                    key: 'nbr',
+                                    // readonly:true,
+                                    type: 'basLov',
+                                    lovtype: 'getcontract'
                                 }
                             ]
                         },
@@ -268,9 +190,9 @@ define(function () {
                         },
                         {
                             title: "",
-                            key: 'aprnbah.detail', 
+                            key: 'tempbats',
                             type: "basEditgrid",
-                            gridkey: "acr.aprnbah.detail",
+                            gridkey: "acr.tempbats.detail",
                             css: "cell100",
                             action: {
                                 add: {
@@ -289,7 +211,7 @@ define(function () {
                                         var item = {
                                             isdel: false
                                         }
-                                        scope.model.aprnbah.detail.push(item);
+                                        scope.model.tempbats.push(item);
                                     }
                                 },
                                 del: {
@@ -307,8 +229,8 @@ define(function () {
                                 }
                             },
                             headers: {
-                                "acr_mon": {
-                                    displayName: "預計請款月份",
+                                "temp_nbr": {
+                                    displayName: "項目編號",
                                     readonlystatus: {
                                         relation: "and",
                                         filedlist: [{
@@ -317,12 +239,12 @@ define(function () {
                                             }, //表单新增状态
                                         ]
                                     },
-                                    type: 'basEsydatetime',
-                                    format: "YYYYMM",
+                                    type: 'basLov',
+                                    lovtype: 'gettemp',
                                     width: 110
                                 },
                                 "temp_desc": {
-                                    displayName: "請款內容",
+                                    displayName: "代墊內容",
                                     readonlystatus: {
                                         relation: "and",
                                         filedlist: [{
@@ -331,8 +253,8 @@ define(function () {
                                             }, //表单新增状态
                                         ]
                                     },
-                                    type: 'basDefault',
-                                    lovtype: '',
+                                    type: 'basLov',
+                                    lovtype: 'gettemp',
                                     width: 110
                                 },
                                 "amt": {
@@ -345,15 +267,12 @@ define(function () {
                                             }, //表单新增状态
                                         ]
                                     },
-                                    onchange:(item)=>{
-                                        scope.counttot_amt();
-                                    },
                                     type: 'basNumber',
                                     lovtype: '',
                                     width: 110
                                 },
-                                "status": {
-                                    displayName: "選擇",
+                                "acr_mon": {
+                                    displayName: "請款月份",
                                     readonlystatus: {
                                         relation: "and",
                                         filedlist: [{
@@ -362,9 +281,25 @@ define(function () {
                                             }, //表单新增状态
                                         ]
                                     },
-                                    type: 'basCheckboxes',
+                                    type: 'basEsydatetime',
+                                    format:"YYYYMM",
+                                    width: 110
+                                },
+                                "status": {
+                                    displayName: "狀態",
+                                    readonlystatus: {
+                                        relation: "and",
+                                        filedlist: [{
+                                                field: "formstatus",
+                                                status: "view"
+                                            }, //表单新增状态
+                                        ]
+                                    },
+                                    type: 'basLov',
+                                    lovtype: 'select',
                                     titleMap: [
-                                        { value: "1", name: "勾選" },
+                                        { value: "1", name: "已付" },
+                                        { value: "2", name: "未付" },
                                     ],
                                     width: 110
                                 }
@@ -391,8 +326,8 @@ define(function () {
                     dialog.confirm('确定删除当前数据?').then(function () {
                         scope.promise = utils.ajax({
                             method: 'DELETE',
-                            url: "acr/aprnbah/" + scope.model.uid,
-                            mockUrl: "plugins/data/aprnbah.detail.json"
+                            url: "acr/tempbat/" + scope.model.uid,
+                            mockUrl: "plugins/data/tempbat.detail.json"
                         }).then(function (res) {
                             toastr.info("数据删除成功!!!");
                             scope.uid = "";
@@ -415,8 +350,8 @@ define(function () {
                     if (scope.uid) {
                         scope.promise = utils.ajax({
                             method: 'GET',
-                            url: "acr/aprnbah/" + scope.uid,
-                            mockUrl: "plugins/data/aprnbah.detail.json"
+                            url: "acr/tempbat/" + scope.uid,
+                            mockUrl: "plugins/data/tempbat.detail.json"
                         }).then(function (res) {
                             var data = res.data;
                             scope.model = data.body;
@@ -434,6 +369,14 @@ define(function () {
 
                 },
                 save: function (event, form) {
+                    console.log(scope.model);
+                    var tempbats = scope.model.tempbats;
+                    tempbats.forEach(element =>{
+                         element.cus_nbr=scope.model.cus_nbr;
+                         element.nbr=scope.model.nbr;
+                    });
+                    console.log(tempbats);
+                    
                     for (var p in scope.model) {
                         if (scope.model[p] === null) {
                             delete scope.model[p];
@@ -449,8 +392,8 @@ define(function () {
                     scope.model.formstatus = "read";
                     scope.promise = utils.ajax({
                         method: "POST",
-                        url: "acr/aprnbah",
-                        mockUrl: "plugins/data/aprnbah.detail.json",
+                        url: "acr/tempbat",
+                        mockUrl: "plugins/data/tempbat.detail.json",
                         data: scope.model
                     }).then(function (res) {
                         scope.uid = res.data.body.uid
@@ -471,17 +414,6 @@ define(function () {
                     });
                 }
             };
-            scope.counttot_amt = function () {
-                let tot_amt=0;
-                scope.model.aprnbah.detail.forEach(function (item) {//aprnbah.detail要與前面明細的key對應
-                    if (!item.isdel) {
-                        tot_amt = tot_amt + (item.amt ? item.amt : 0);
-                        // rec_amt = rec_amt + (item.rec_amt ? item.rec_amt:0);
-                    }
-                }, this);
-                // scope.model.tot_amt = rec_amt;
-                scope.model.amt = tot_amt;
-            }
             scope.action.load();
         });
 

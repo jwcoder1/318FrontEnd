@@ -725,7 +725,87 @@ define(function() {
                                 },
                                 {
                                     title: "聯絡人",
-                                    items:[{}]
+                                    items:[{
+                                        title: "明細行",
+                                        key: 'cuscus',
+                                        type: "basEditgrid",
+                                        gridkey: "bas.cuscus.detail",
+                                        css: "cell100",
+                                        action: {
+                                            add: {
+                                                editstatus: {
+                                                    relation: "or",
+                                                    editstatus: {
+                                                        relation: "and",
+                                                        filedlist: [
+                                                            {field: "formstatus", status: "add,edit"}, //表單為新增，修改狀態
+                                                        ]
+                                                    },
+                                                    filedlist: [
+                                                        {field: "formstatus", status: "add,edit"}, //表單新增狀態
+                                                    ]
+                                                },
+                                                click: function () {
+                                                    var item = {
+                                                        isdel: false
+                                                    }
+                                                    scope.model.cuscus.push(item);
+                                                }
+                                            },
+                                            del: {
+                                                editstatus: {
+                                                    relation: "or",
+                                                    filedlist: [
+                                                        {field: "formstatus", status: "add,edit"}, //表單新增狀態
+                                                    ]
+                                                },
+                                                click: function (item) {
+                                                    item.isdel = true;
+                                                    scope.counttot_amt();
+                                                }
+                                            }
+                                        },
+                                        headers: {
+                                            "attname": {
+                                                displayName: "連絡人",
+                                                type: "basDefault",
+                                                width: 110
+                                            },
+                                            "chunwei": {
+                                                displayName: "稱謂",
+                                                type: 'basDefault',
+                                                width: 110
+                                            },
+                                            "dept_id": {
+                                                displayName: "部門",
+                                                type: 'basDefault',
+                                                width: 110,
+                                            },
+                                            "t_desc": {
+                                                displayName: "職稱",
+                                                type: 'basDefault',
+                                                width: 110
+                                            },
+                                            "att_tel": {
+                                                displayName: "電話",
+                                                type: 'basDefault',
+                                                width: 110,
+                                               
+                                            },
+                                            "att_toh": {
+                                                displayName: "分機",
+                                                type: 'basDefault',
+                                                width: 110
+                                            },
+                                            "att_fax": {
+                                                displayName: "傳真",
+                                                type: 'basDefault',
+                                                width: 110
+                                            },
+                                        }
+            
+                                    },
+                                ]
                                 },
                                 {
                                     title: "地址/備註",

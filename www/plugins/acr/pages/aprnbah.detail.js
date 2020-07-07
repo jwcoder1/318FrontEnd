@@ -189,14 +189,7 @@ define(function () {
                                 {
                                     title: "帳單總額",
                                     key: 'amt',
-                                    editstatus: {
-                                        relation: "and",
-                                        filedlist: [{
-                                                field: "formstatus",
-                                                status: "add,edit"
-                                            } //表单为新增，修改状态
-                                        ]
-                                    },
+                                    readonly: true,
                                     type: 'basNumber',
                                     lovtype: ''
                                 },
@@ -275,7 +268,7 @@ define(function () {
                         },
                         {
                             title: "",
-                            key: 'aprnbat.detail',
+                            key: 'aprnbah.detail', 
                             type: "basEditgrid",
                             gridkey: "acr.aprnbah.detail",
                             css: "cell100",
@@ -296,7 +289,7 @@ define(function () {
                                         var item = {
                                             isdel: false
                                         }
-                                        scope.model.aprnbat.detail.push(item);
+                                        scope.model.aprnbah.detail.push(item);
                                     }
                                 },
                                 del: {
@@ -352,6 +345,9 @@ define(function () {
                                             }, //表单新增状态
                                         ]
                                     },
+                                    onchange:(item)=>{
+                                        scope.counttot_amt();
+                                    },
                                     type: 'basNumber',
                                     lovtype: '',
                                     width: 110
@@ -395,7 +391,7 @@ define(function () {
                     dialog.confirm('确定删除当前数据?').then(function () {
                         scope.promise = utils.ajax({
                             method: 'DELETE',
-                            url: "acr/tempbat/" + scope.model.uid,
+                            url: "acr/aprnbah/" + scope.model.uid,
                             mockUrl: "plugins/data/aprnbah.detail.json"
                         }).then(function (res) {
                             toastr.info("数据删除成功!!!");
@@ -419,7 +415,7 @@ define(function () {
                     if (scope.uid) {
                         scope.promise = utils.ajax({
                             method: 'GET',
-                            url: "acr/tempbat/" + scope.uid,
+                            url: "acr/aprnbah/" + scope.uid,
                             mockUrl: "plugins/data/aprnbah.detail.json"
                         }).then(function (res) {
                             var data = res.data;
@@ -453,7 +449,7 @@ define(function () {
                     scope.model.formstatus = "read";
                     scope.promise = utils.ajax({
                         method: "POST",
-                        url: "acr/tempbat",
+                        url: "acr/aprnbah",
                         mockUrl: "plugins/data/aprnbah.detail.json",
                         data: scope.model
                     }).then(function (res) {
@@ -475,6 +471,17 @@ define(function () {
                     });
                 }
             };
+            scope.counttot_amt = function () {
+                let tot_amt=0;
+                scope.model.aprnbah.detail.forEach(function (item) {//aprnbah.detail要與前面明細的key對應
+                    if (!item.isdel) {
+                        tot_amt = tot_amt + (item.amt ? item.amt : 0);
+                        // rec_amt = rec_amt + (item.rec_amt ? item.rec_amt:0);
+                    }
+                }, this);
+                // scope.model.tot_amt = rec_amt;
+                scope.model.amt = tot_amt;
+            }
             scope.action.load();
         });
 

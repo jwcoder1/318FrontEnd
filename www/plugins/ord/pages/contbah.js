@@ -16,7 +16,7 @@ define(function () {
             scope.promise = null;
             scope.listUrl = "plugins/bas/templates/list.html";
             scope.config = {
-                gridkey: "contract",
+                gridkey: "contbah",
                 title: "合約管理",
                 listoperation: {
                     add: {

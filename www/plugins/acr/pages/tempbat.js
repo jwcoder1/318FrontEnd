@@ -64,7 +64,8 @@ define(function () {
                     //     label: "客戶名稱"
                     // },
                     nbr: {
-                        type: "basDefault",
+                        type: "basLov",
+                        lovtype: "getcontract",
                         name: "nbr",
                         label: "合約編號"
                     }

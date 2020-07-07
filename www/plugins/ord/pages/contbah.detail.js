@@ -361,7 +361,7 @@ define(function () {
                             title: "",
                             key: 'contacrs',
                             type: "basEditgrid",
-                            gridkey: "ord.contract.detail",
+                            gridkey: "ord.contbah.detail",
                             css: "cell100",
                             action: {
                                 add: {

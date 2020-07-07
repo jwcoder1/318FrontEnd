@@ -4,7 +4,7 @@ define(function() {
             $timeout, dialog, toastr, ngDialog, qwsys, $http) {
             var scope = $scope;
             scope.filter = {
-                isproject: "1"
+                isproject: 1
             };
 
             scope.model = {
@@ -105,11 +105,11 @@ define(function() {
                         type: "basLov",
                         lovtype: "select",
                         titleMap: [{
-                                value: "1",
+                                value: 1,
                                 name: "已結案"
                             },
                             {
-                                value: "2",
+                                value: 2,
                                 name: "未結案"
                             },
                         ],
@@ -155,8 +155,7 @@ define(function() {
                 },
 
                 load: function() {
-                    console.log(scope.filter)
-                    console.log("url=","ord/contcase/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort=" + scope.datapage.sort)
+
                     scope.promise = utils.ajax({
                         method: 'POST',
                         url: "ord/contcase/query?page=" + scope.datapage.page + "&size=" + scope.datapage.size + "&sort=" + scope.datapage.sort,
