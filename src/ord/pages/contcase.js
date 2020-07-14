@@ -3,9 +3,9 @@ define(function() {
         function($rootScope, $scope, $location, uiGridConstants, utils, path, settings,
             $timeout, dialog, toastr, ngDialog, qwsys, $http) {
             var scope = $scope;
-            scope.filter = {
-                isproject: "1"
-            };
+            // scope.filter = {
+            //     isproject: "1"
+            // };
 
             scope.model = {
                     records: 0,

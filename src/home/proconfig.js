@@ -68,6 +68,17 @@ angular.module('app.core.proconfig', [])
                             nameField: "nbr",
                         },
                     },
+                    getsubject: {
+                        title: "獲取合約",
+                        queryUrl: "acc/accmst/query", //查询地址
+                        initLoad: false, //加载时是否初始化数据
+                        small: true, //速查是否显示编号
+                        showField: { //速查基本栏位
+                            valueField: "acc_id",
+                            nameField: "acc_id",
+                            smallField: "acc_name"
+                        },
+                    },
                 }
             }
         }
